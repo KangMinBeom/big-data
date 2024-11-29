@@ -21,10 +21,10 @@ import matplotlib.pyplot as plt
 
 
 fe = fm.FontEntry(
-    fname=r'/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf', # ttf 파일이 저장되어 있는 경로
-    name='NanumGothic')                        # 이 폰트의 원하는 이름 설정
-fm.fontManager.ttflist.insert(0, fe)              # Matplotlib에 폰트 추가
-plt.rcParams.update({'font.size': 18, 'font.family': 'NanumGothic'}) # 폰트 설
+    fname=r'/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf', 
+    name='NanumGothic')                        
+fm.fontManager.ttflist.insert(0, fe)              
+plt.rcParams.update({'font.size': 18, 'font.family': 'NanumGothic'}) 
 
 # 단계 2: 런타임 재시작
 import os
@@ -41,7 +41,7 @@ mpl.rcParams['axes.unicode_minus'] = False
 # 한글 폰트 설정
 fe = fm.FontEntry(
     fname=r'/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf', 
-    name='NanumGothic')                        
+    name='NanumGothic')                       
 fm.fontManager.ttflist.insert(0, fe)              
 plt.rcParams.update({'font.size': 18, 'font.family': 'NanumGothic'})
 
@@ -66,7 +66,7 @@ plt.bar(x, df['2023년'], width=bar_width, label='2023년')
 plt.bar([p + bar_width for p in x], df['2024년'], width=bar_width, label='2024년')
 
 def thousands_formatter(x, pos):
-    return f'{int(x / 10000):,}만'  # 만 단위로 변환 및 콤마 추가
+    return f'{int(x / 10000):,}만'  
 
 plt.gca().yaxis.set_major_formatter(ticker.FuncFormatter(thousands_formatter))
 
@@ -98,7 +98,7 @@ df.drop(df.columns[4], axis=1, inplace=True)
 df_melted = df.melt(id_vars='성별', var_name='연도', value_name='인구수')
 
 def thousands_formatter(x, pos):
-    return f'{int(x / 10000):,}만'  # 만 단위로 변환 및 콤마 추가
+    return f'{int(x / 10000):,}만' 
 
 sns.lineplot(data=df_melted, x='연도', y='인구수', hue='성별', marker='o')
 
@@ -147,12 +147,12 @@ import matplotlib.font_manager as fm
 from matplotlib import font_manager
 
 
-font_path = '/usr/share/fonts/truetype/nanum/NanumGothic.ttf'  # 적절한 한글 폰트 경로
+font_path = '/usr/share/fonts/truetype/nanum/NanumGothic.ttf' 
 font = font_manager.FontProperties(fname=font_path).get_name()
 plt.rc('font', family=font)
 
 df = pd.read_csv('/content/지연 현황.csv', encoding="euc-kr")
-
+print(df)
 airports = df["공항"]
 delay_causes = ["기상 원인 지연(건)", "비행기 연결 원인 지연(건)", "비행기 정비 원인 지연(건)", "기타(건)"]
 
@@ -165,11 +165,16 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
+df["공항_노선"] = df["공항"] + " (" + df["노선"] + ")"
+
+airports = df["공항_노선"]
+
 df[delay_causes].plot(kind="bar", stacked=True, figsize=(10, 6), colormap="viridis")
-plt.title("공항별 지연 원인")
-plt.xlabel("공항")
-plt.ylabel("지연 건수")
-plt.xticks(range(len(airports)), airports, rotation=45)
-plt.legend(title="지연 원인")
+plt.title("공항별 지연 원인", fontsize=14)
+plt.xlabel("공항 (노선)", fontsize=12)
+plt.ylabel("지연 건수", fontsize=12)
+plt.xticks(range(len(airports)), airports, rotation=45, fontsize=10)
+plt.yticks(fontsize=10)
+plt.legend(title="지연 원인", fontsize=10, title_fontsize=12)
 plt.tight_layout()
 plt.show()
